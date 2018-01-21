@@ -159,9 +159,10 @@
 
 <script>
 import { mapState } from 'vuex'
-import config from '../config'
+import {serverConfig} from '../api/server_config'
 import Sidebar from './Sidebar'
 import 'hideseek'
+import api from '../api'
 
 export default {
   name: 'Dash',
@@ -173,11 +174,14 @@ export default {
       // section: 'Dash',
       year: new Date().getFullYear(),
       classes: {
-        fixed_layout: config.fixedLayout,
-        hide_logo: config.hideLogoOnMobile
+        fixed_layout: serverConfig.fixedLayout,
+        hide_logo: serverConfig.hideLogoOnMobile
       },
       error: ''
     }
+  },
+  mounted () {
+    this.init()
   },
   computed: {
     ...mapState([
@@ -192,8 +196,10 @@ export default {
     }
   },
   methods: {
-    changeloading () {
-      this.$store.commit('TOGGLE_SEARCHING')
+    init () {
+      if (!api.checkLoginStatus()) {
+        this.$router.push({ path: '/login' })
+      }
     }
   }
 }

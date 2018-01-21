@@ -8,6 +8,7 @@ import VueRouter from 'vue-router'
 import { sync } from 'vuex-router-sync'
 import routes from './routes'
 import store from './store'
+import api from './api'
 
 // Import Helpers for filters
 import { domain, count, prettyDate, pluralize } from './filters'
@@ -35,14 +36,19 @@ var router = new VueRouter({
 
 // Some middleware to help us ensure the user is authenticated.
 router.beforeEach((to, from, next) => {
-  if (to.matched.some(record => record.meta.requiresAuth) && (!router.app.$store.state.token || router.app.$store.state.token === 'null')) {
+  console.log()
+  if (to.meta.requireAuth) {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
-    window.console.log('Not authenticated')
-    next({
-      path: '/login',
-      query: { redirect: to.fullPath }
-    })
+    console.log(api.getCookie('ld_user_name_cookie') === undefined)
+    if (api.getCookie('ld_user_name_cookie') === undefined) {
+      next({
+        path: '/login',
+        query: { redirect: to.fullPath }
+      })
+    } else {
+      next()
+    }
   } else {
     next()
   }
