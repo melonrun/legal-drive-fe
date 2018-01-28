@@ -24,7 +24,8 @@ export default {
       method: 'post',
       url,
       data,
-      timeout: 5000
+      timeout: 5000,
+      withCredentials: true
     }).then(
       (response) => {
         return checkStatus(response)
@@ -37,7 +38,29 @@ export default {
       method: 'get',
       url,
       data,
-      timeout: 5000
+      timeout: 5000,
+      withCredentials: true
+    }).then(
+      (response) => {
+        return checkStatus(response)
+      }
+    ).catch(errorCallback)
+  },
+  upload (uri, param) {
+    if (!param || !uri) {
+      return
+    }
+    var url = serverConfig.serverURI + uri
+    let config = {
+      headers: {'Content-Type': 'multipart/form-data'}
+    }
+    return axios({
+      method: 'post',
+      url,
+      data: param,
+      config: config,
+      timeout: 10000,
+      withCredentials: true
     }).then(
       (response) => {
         return checkStatus(response)
@@ -60,7 +83,8 @@ export default {
       method,
       url,
       data,
-      timeout: 5000
+      timeout: 5000,
+      withCredentials: true
     }).then(
       (response) => {
         return checkStatus(response)
@@ -85,10 +109,32 @@ export default {
     return ''
   },
   checkLoginStatus () {
-    let userRole = this.getCookie('ld_user_name_cookie')
+    let userRole = this.getCookie('_ld_user_name_cookie_')
     if (!userRole) {
       return false
     }
     return true
+  },
+  formatDate (date, fmt = 'yyyy-MM-dd hh:mm:ss') {
+    if (/(y+)/.test(fmt)) {
+      fmt = fmt.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length))
+    }
+    let o = {
+      'M+': date.getMonth() + 1,
+      'd+': date.getDate(),
+      'h+': date.getHours(),
+      'm+': date.getMinutes(),
+      's+': date.getSeconds()
+    }
+    for (let k in o) {
+      if (new RegExp(`(${k})`).test(fmt)) {
+        let str = o[k] + ''
+        fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? str : this.padLeftZero(str))
+      }
+    }
+    return fmt
+  },
+  padLeftZero (str) {
+    return ('00' + str).substr(str.length)
   }
 }

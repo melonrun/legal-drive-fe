@@ -36,12 +36,10 @@ var router = new VueRouter({
 
 // Some middleware to help us ensure the user is authenticated.
 router.beforeEach((to, from, next) => {
-  console.log()
   if (to.meta.requireAuth) {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
-    console.log(api.getCookie('ld_user_name_cookie') === undefined)
-    if (api.getCookie('ld_user_name_cookie') === undefined) {
+    if (api.getCookie('_ld_user_name_cookie_') === undefined) {
       next({
         path: '/login',
         query: { redirect: to.fullPath }

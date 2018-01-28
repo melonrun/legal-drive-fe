@@ -13,7 +13,7 @@
         <span class="page">团队管理</span>
       </a>
     </router-link>
-    <router-link tag="li" class="pageLink" to="/tasks">
+    <router-link tag="li" class="pageLink" to="/tag">
       <a>
         <i class="fa fa-tags"></i>
         <span class="page">标签管理</span>
@@ -21,7 +21,7 @@
     </router-link>
 
     <li class="header">Files</li>
-    <router-link tag="li" class="pageLink" to="/setting">
+    <router-link tag="li" class="pageLink" to="/file">
       <a>
         <i class="fa fa-folder-o"></i>
         <span class="page">文件库</span>

@@ -2,14 +2,15 @@
   <div class="container container-table">
       <div class="row vertical-10p">
         <div class="container">
-          <img src="/legal/static/img/logo.png" class="center-block logo">
+          <img src="/legal/static/img/legal-driver-banner.png" class="center-block logo">
           <div class="text-center col-md-4 col-sm-offset-4">
             <!-- login form -->
             <form class="ui form loginForm"  @submit.prevent="checkCredits">
 
               <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                <input class="form-control" name="userName" placeholder="Username" type="text" v-model="userName">
+                <input class="form-control" name="userName" placeholder="Username" type="text" v-model="userName"
+                autocomplete="off">
               </div>
 
               <div class="input-group">
@@ -53,8 +54,10 @@ export default {
       const res = await api.post('/entry/login', {userName, userPass})
       if (res.status) {
         this.response = res.msg
-        api.setCookie('ld_user_name_cookie', res.result['roleNameDisplay'])
-        this.$router.push({ path: '/user' })
+        api.setCookie('_ld_user_role_cookie_', res.result['roleNameDisplay'])
+        api.setCookie('_ld_user_name_cookie_', res.result['userName'])
+        this.$router.replace({ path: '/user' })
+        this.$router.go(0)
       } else if (!res.status) {
         this.response = res.msg
       }
@@ -66,7 +69,7 @@ export default {
 <style>
 html, body, .container-table {
   height: 100%;
-  background-color: #282B30 !important;
+  background-color: #5e6063 !important;
 }
 .container-table {
     display: table;
@@ -76,14 +79,18 @@ html, body, .container-table {
   padding-top: 10%;
 }
 .logo {
-  width: 15em;
-  padding: 3em;
+  width: 45em;
 }
 .loginForm .input-group {
   padding-bottom: 1em;
   height: 4em;
 }
 .input-group input {
-  height: 4em;
+  height: 3em;
+}
+input:-webkit-autofill,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px white inset;
 }
 </style>
