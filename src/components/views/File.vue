@@ -5,6 +5,9 @@
         <button type="button" class="btn btn-primary btn-tumblr" data-toggle="modal"
                 data-target="#modal-add-tag" @click='addNewFileModal()'> 上传文件
         </button>
+        <button type="button" class="btn btn-primary btn-tumblr" data-toggle="modal"
+                data-target="#modal-add-tag" @click='backTeamHomeView()'> 返回
+        </button>
       </div>
     </div>
 
@@ -218,6 +221,10 @@
           this.totalFileItem = res.result.totalItem
         }
       },
+      backTeamHomeView: function () {
+        this.feCurrentParentId = 1
+        this.callFileListByUser(1)
+      },
       changeCurrentPath: function (pIndex) {
         this.feCurrentUploadPath = this.fileResultList[pIndex].filePath
         this.feCurrentParentId = this.fileResultList[pIndex].id
@@ -225,6 +232,7 @@
       },
       downloadCurrentFile: function (index) {
         console.log(this.fileResultList[index].filePath)
+        api.download('/file/download?fileId=' + this.fileResultList[index].id)
       }
     },
     mounted () {

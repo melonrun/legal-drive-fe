@@ -18,6 +18,9 @@ function errorCallback (error) {
 }
 
 export default {
+  download (url) {
+    window.open(serverConfig.serverURI + url)
+  },
   post (uri, data) {
     var url = serverConfig.serverURI + uri
     return axios({
