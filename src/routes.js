@@ -3,8 +3,11 @@ import LoginView from './components/Login.vue'
 import NotFoundView from './components/404.vue'
 
 // Import Views - Dash
-import DashboardView from './components/views/Dashboard.vue'
-import TablesView from './components/views/Tables.vue'
+import UserView from './components/views/User.vue'
+import TeamView from './components/views/Team.vue'
+import TagView from './components/views/Tags.vue'
+import FileView from './components/views/File'
+
 import TasksView from './components/views/Tasks.vue'
 import SettingView from './components/views/Setting.vue'
 import AccessView from './components/views/Access.vue'
@@ -22,31 +25,41 @@ const routes = [
     component: DashView,
     children: [
       {
-        path: 'dashboard',
+        path: 'user',
         alias: '',
-        component: DashboardView,
-        name: 'Dashboard',
-        meta: {description: 'Overview of environment'}
+        component: UserView,
+        name: '用户信息',
+        meta: {requireAuth: true}
       }, {
-        path: 'tables',
-        component: TablesView,
-        name: 'Tables',
-        meta: {description: 'Simple and advance table in CoPilot'}
+        path: 'team',
+        component: TeamView,
+        name: '团队信息',
+        meta: {description: '', requiresAuth: true}
+      }, {
+        path: 'tag',
+        component: TagView,
+        name: '标签信息',
+        meta: {description: '', requiresAuth: true}
+      }, {
+        path: 'file',
+        component: FileView,
+        name: '文件库',
+        meta: {description: '', requiresAuth: true}
       }, {
         path: 'tasks',
         component: TasksView,
         name: 'Tasks',
-        meta: {description: 'Tasks page in the form of a timeline'}
+        meta: {description: 'Tasks page in the form of a timeline', requiresAuth: true}
       }, {
         path: 'setting',
         component: SettingView,
         name: 'Settings',
-        meta: {description: 'User settings page'}
+        meta: {description: 'User settings page', requiresAuth: true}
       }, {
         path: 'access',
         component: AccessView,
         name: 'Access',
-        meta: {description: 'Example of using maps'}
+        meta: {description: 'Example of using maps', requiresAuth: true}
       }, {
         path: 'server',
         component: ServerView,
@@ -56,7 +69,7 @@ const routes = [
         path: 'repos',
         component: ReposView,
         name: 'Repository',
-        meta: {description: 'List of popular javascript repos'}
+        meta: {description: 'List of popular javascript repos', requiresAuth: true}
       }
     ]
   }, {

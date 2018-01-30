@@ -1,77 +1,42 @@
 <template>
   <ul class="sidebar-menu">
-    <li class="header">TOOLS</li>
-    <router-link tag="li" class="pageLink" to="/">
+    <li class="header">Manage</li>
+    <router-link tag="li" class="pageLink" to="/user">
       <a>
-        <i class="fa fa-desktop"></i>
-        <span class="page">Dashboard</span>
+        <i class="fa fa-users"></i>
+        <span class="page">用户管理</span>
       </a>
     </router-link>
-    <router-link tag="li" class="pageLink" to="/tables">
+    <router-link tag="li" class="pageLink" to="/team">
       <a>
         <i class="fa fa-table"></i>
-        <span class="page">Tables</span>
+        <span class="page">团队管理</span>
+      </a>
+    </router-link>
+    <router-link tag="li" class="pageLink" to="/tag">
+      <a>
+        <i class="fa fa-tags"></i>
+        <span class="page">标签管理</span>
       </a>
     </router-link>
 
-    <li class="header">ME</li>
-    <router-link tag="li" class="pageLink" to="/tasks">
+    <li class="header">Files</li>
+    <router-link tag="li" class="pageLink" to="/file">
       <a>
-        <i class="fa fa-tasks"></i>
-        <span class="page">Tasks</span>
-      </a>
-    </router-link>
-    <router-link tag="li" class="pageLink" to="/setting">
-      <a>
-        <i class="fa fa-cog"></i>
-        <span class="page">Settings</span>
-      </a>
-    </router-link>
-    <li class="treeview">
-      <a href="#">
         <i class="fa fa-folder-o"></i>
-        <span>Files</span>
-        <span class="pull-right-container">
-          <i class="fa fa-angle-left fa-fw pull-right"></i>
-        </span>
+        <span class="page">文件库</span>
       </a>
-      <ul class="treeview-menu">
-        <li>
-          <a href="#">
-            <i class="fa fa-file-word-o"></i> Item 1
-          </a>
-        </li>
-        <li>
-          <a href="#">
-            <i class="fa fa-file-picture-o"></i> Item 2
-          </a>
-        </li>
-        <li>
-          <a href="#">
-            <i class="fa fa-file-pdf-o"></i> Item 3
-          </a>
-        </li>
-      </ul>
-    </li>
-
-    <li class="header">LOGS</li>
+    </router-link>
     <router-link tag="li" class="pageLink" to="/access">
       <a>
-        <i class="fa fa-book"></i>
-        <span class="page">Access</span>
-      </a>
-    </router-link>
-    <router-link tag="li" class="pageLink" to="/server">
-      <a>
-        <i class="fa fa-hdd-o"></i>
-        <span class="page">Server</span>
+        <i class="fa fa-calendar-o"></i>
+        <span class="page">任务进度</span>
       </a>
     </router-link>
     <router-link tag="li" class="pageLink" to="/repos">
       <a>
-        <i class="fa fa-heart"></i>
-        <span class="page">Repos</span>
-        <small class="label pull-right bg-green">AJAX</small>
+        <i class="fa fa-list-ul"></i>
+        <span class="page">待办事件</span>
       </a>
     </router-link>
 

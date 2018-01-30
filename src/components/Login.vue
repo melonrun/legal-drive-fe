@@ -2,25 +2,32 @@
   <div class="container container-table">
       <div class="row vertical-10p">
         <div class="container">
-          <img src="/legal/static/img/logo.png" class="center-block logo">
+          <img src="/legal/static/img/legal-driver-banner.png" class="center-block logo">
           <div class="text-center col-md-4 col-sm-offset-4">
             <!-- login form -->
-            <form class="ui form loginForm"  @submit.prevent="checkCreds">
+            <form class="ui form loginForm"  @submit.prevent="checkCredits">
 
               <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                <input class="form-control" name="username" placeholder="Username" type="text" v-model="username">
+                <input class="form-control" name="userName" placeholder="Username" type="text" v-model="userName"
+                autocomplete="off">
               </div>
 
               <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                <input class="form-control" name="password" placeholder="Password" type="password" v-model="password">
+                <input class="form-control" name="userPass" placeholder="Password" type="password" v-model="userPass">
               </div>
-              <button type="submit" v-bind:class="'btn btn-primary btn-lg ' + loading">Submit</button>
-            </form>
 
+              <div class="row">
+                <div v-if=response class="text-red text-left
+                  col-xs-8" style="margin-top: 3%;"><p>{{response}}</p></div>
+                <div class="col-xs-4 pull-right">
+                  <button class='' type="submit"
+                          v-bind:class="'btn btn-block btn-primary' + loading">Submit</button>
+                </div>
+              </div>
+            </form>
             <!-- errors -->
-            <div v-if=response class="text-red"><p>{{response}}</p></div>
           </div>
         </div>
       </div>
@@ -32,71 +39,28 @@ import api from '../api'
 
 export default {
   name: 'Login',
-  data (router) {
+  data () {
     return {
       section: 'Login',
       loading: '',
-      username: '',
-      password: '',
+      userName: '',
+      userPass: '',
       response: ''
     }
   },
   methods: {
-    checkCreds () {
-      const {username, password} = this
-
-      this.toggleLoading()
-      this.resetResponse()
-      this.$store.commit('TOGGLE_LOADING')
-
-      /* Making API call to authenticate a user */
-      api.request('post', '/login', {username, password})
-      .then(response => {
-        this.toggleLoading()
-
-        var data = response.data
-        /* Checking if error object was returned from the server */
-        if (data.error) {
-          var errorName = data.error.name
-          if (errorName) {
-            this.response = errorName === 'InvalidCredentialsError'
-            ? 'Username/Password incorrect. Please try again.'
-            : errorName
-          } else {
-            this.response = data.error
-          }
-
-          return
-        }
-
-        /* Setting user in the state and caching record to the localStorage */
-        if (data.user) {
-          var token = 'Bearer ' + data.token
-
-          this.$store.commit('SET_USER', data.user)
-          this.$store.commit('SET_TOKEN', token)
-
-          if (window.localStorage) {
-            window.localStorage.setItem('user', JSON.stringify(data.user))
-            window.localStorage.setItem('token', token)
-          }
-
-          this.$router.push(data.redirect ? data.redirect : '/')
-        }
-      })
-      .catch(error => {
-        this.$store.commit('TOGGLE_LOADING')
-        console.log(error)
-
-        this.response = 'Server appears to be offline'
-        this.toggleLoading()
-      })
-    },
-    toggleLoading () {
-      this.loading = (this.loading === '') ? 'loading' : ''
-    },
-    resetResponse () {
-      this.response = ''
+    checkCredits: async function () {
+      const {userName, userPass} = this
+      const res = await api.post('/entry/login', {userName, userPass})
+      if (res.status) {
+        this.response = res.msg
+        api.setCookie('_ld_user_role_cookie_', res.result['roleNameDisplay'])
+        api.setCookie('_ld_user_name_cookie_', res.result['userName'])
+        this.$router.replace({ path: '/user' })
+        this.$router.go(0)
+      } else if (!res.status) {
+        this.response = res.msg
+      }
     }
   }
 }
@@ -105,31 +69,28 @@ export default {
 <style>
 html, body, .container-table {
   height: 100%;
-  background-color: #282B30 !important;
+  background-color: #5e6063 !important;
 }
 .container-table {
     display: table;
     color: white;
 }
-.vertical-center-row {
-    display: table-cell;
-    vertical-align: middle;
-}
-.vertical-20p {
-  padding-top: 20%;
-}
 .vertical-10p {
   padding-top: 10%;
 }
 .logo {
-  width: 15em;
-  padding: 3em;
+  width: 45em;
 }
 .loginForm .input-group {
   padding-bottom: 1em;
   height: 4em;
 }
 .input-group input {
-  height: 4em;
+  height: 3em;
+}
+input:-webkit-autofill,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px white inset;
 }
 </style>
