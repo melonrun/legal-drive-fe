@@ -6,7 +6,8 @@ import NotFoundView from './components/404.vue'
 import UserView from './components/views/User.vue'
 import TeamView from './components/views/Team.vue'
 import TagView from './components/views/Tags.vue'
-import FileView from './components/views/File'
+import FileView from './components/views/File.vue'
+import SearchView from './components/views/Search.vue'
 
 import TasksView from './components/views/Tasks.vue'
 import SettingView from './components/views/Setting.vue'
@@ -43,7 +44,12 @@ const routes = [
       }, {
         path: 'file',
         component: FileView,
-        name: '文件库',
+        name: '文件管理',
+        meta: {description: '', requiresAuth: true}
+      }, {
+        path: 'search',
+        component: SearchView,
+        name: '文件搜索',
         meta: {description: '', requiresAuth: true}
       }, {
         path: 'tasks',

@@ -36,7 +36,7 @@
                 <div class="form-group">
                   <label for="inputUserRole" class="col-sm-2 control-label">角色</label>
                   <div class="col-sm-10">
-                    <select class="form-control select2" style="width: 100%;" id="inputUserRole"
+                    <select class="form-control" style="width: 100%;" id="inputUserRole"
                             v-model="roleId">
                       <option v-if="roleList" v-for="roleItem in roleList" v-bind:value="roleItem.roleId">
                         {{roleItem.roleName}}
@@ -47,7 +47,7 @@
                 <div class="form-group">
                   <label for="inputUserTeam" class="col-sm-2 control-label">所属团队</label>
                   <div class="col-sm-10">
-                    <select class="form-control select2" multiple="multiple" data-placeholder="Select a Team"
+                    <select class="form-control" multiple="multiple" data-placeholder="Select a Team"
                             style="width: 100%;" id="inputUserTeam" v-model="teamIds">
                       <option v-if="teamList" v-for="teamItem in teamList" v-bind:value="teamItem.id">
                         {{teamItem.teamName}}

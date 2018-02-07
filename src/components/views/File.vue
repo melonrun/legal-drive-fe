@@ -1,5 +1,8 @@
 <template>
   <section class="content">
+    <div class="box-header">
+      <h3 class="box-title">当前所在路径：<code>{{feCurrentUploadPath}}</code></h3>
+    </div>
     <div class="row center-block">
       <div class="col-md-4 col-sm8 col-xs-10">
         <button type="button" class="btn btn-primary btn-tumblr" data-toggle="modal"
@@ -77,11 +80,9 @@
     </div>
 
     <div class="row center-block" style="margin-top: 0.5%;">
+
       <div class="col-md-12">
         <div class="box">
-          <div class="box-header">
-            <h3 class="box-title">当前所在路径：<code>{{feCurrentUploadPath}}</code></h3>
-          </div>
           <!-- /.box-header -->
           <div class="box-body no-padding table-responsive">
             <table class="table table-striped">
@@ -133,8 +134,6 @@
               <li><a href="#" @click='callTeamList(totalFilePageNum)'>»</a></li>
             </ul>
           </div>
-
-
         </div>
       </div>
     </div>
@@ -148,6 +147,7 @@
     name: 'File',
     data () {
       return {
+        isContainsCollapse: 'sidebar-collapse',
         isAddFileShow: false,
         feCurrentUploadPath: '/root',
         feCurrentParentId: 1,

@@ -24,7 +24,13 @@
     <router-link tag="li" class="pageLink" to="/file">
       <a>
         <i class="fa fa-folder-o"></i>
-        <span class="page">文件库</span>
+        <span class="page">文件管理</span>
+      </a>
+    </router-link>
+    <router-link tag="li" class="pageLink" to="/search">
+      <a>
+        <i class="fa fa-search"></i>
+        <span class="page">文件搜索</span>
       </a>
     </router-link>
     <router-link tag="li" class="pageLink" to="/access">
