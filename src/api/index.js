@@ -125,9 +125,9 @@ export default {
     let o = {
       'M+': date.getMonth() + 1,
       'd+': date.getDate(),
-      'h+': date.getHours(),
-      'm+': date.getMinutes(),
-      's+': date.getSeconds()
+      'h+': 0,
+      'm+': 0,
+      's+': 0
     }
     for (let k in o) {
       if (new RegExp(`(${k})`).test(fmt)) {

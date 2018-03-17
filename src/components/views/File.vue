@@ -16,13 +16,16 @@
 
     <div class="modal" id="modal-add-tag" :style="isAddFileShow ? 'display:block;' : ''">
       <div class="modal-dialog">
-        <div class="modal-content">
+        <div class="modal-content box">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true" @click='closeAddFileModal()'>X</span></button>
             <h4 class="modal-title">上传文件</h4>
           </div>
-          <div class="modal-body">
+          <div class="modal-body box">
+            <div v-if="isUploading" class="overlay">
+              <i class="fa fa-refresh fa-spin"></i>
+            </div>
             <form class="form-horizontal">
               <div class="box-body">
                 <div class="form-group">
@@ -69,8 +72,9 @@
             <button type="button" class="btn btn-default pull-left" data-dismiss="modal" @click='closeAddFileModal()'>
               Close
             </button>
-            <button type="button" class="btn btn-primary btn-tumblr" data-dismiss="modal" @click='uploadFile'>
-              Save And Close
+            <button type="button" class="btn btn-primary btn-tumblr" :class="isUploading?'disabled':''"
+                    data-dismiss="modal" @click='uploadFile'>
+              Upload And Close
             </button>
           </div>
         </div>
@@ -91,22 +95,29 @@
                 <th>名称</th>
                 <th>上传时间</th>
                 <th>修改时间</th>
-                <th>所属人</th>
-                <th>所属团队</th>
+                <th>Owner</th>
+                <th>团队</th>
                 <th>标签</th>
                 <th>操作</th>
               </tr>
 
               <tr v-if="fileResultList" v-for="(fileListResultItem, index) in fileResultList">
                 <td v-if="fileListResultItem.fileType==2" @click='changeCurrentPath(index)'>
-                  <i class="fa fa-folder"></i> <a href="#">{{ fileListResultItem.filePath }}</a></td>
+                  <i class="fa fa-folder" style="color:#FCCE65;"></i>&nbsp; <a href="#">{{ fileListResultItem.filePath }}</a></td>
+                <td v-else-if="fileListResultItem.fileName.toLowerCase().split('.').splice(-1) == 'pdf'" >
+                  <i class="fa fa-file-pdf-o" style="color:#DF5959;"></i> &nbsp; <span>{{ fileListResultItem.fileName }}</span></td>
+                <td v-else-if="fileListResultItem.fileName.toLowerCase().split('.').splice(-1) =='doc'" >
+                  <i class="fa fa-file-word-o" style="color:#007bb6;"></i> &nbsp; <span>{{ fileListResultItem.fileName }}</span></td>
+                <td v-else-if="fileListResultItem.fileName.toLowerCase().split('.').splice(-1) =='docx'" >
+                  <i class="fa fa-file-word-o" style="color:#007bb6;"></i> &nbsp; <span>{{ fileListResultItem.fileName }}</span></td>
                 <td v-else="fileListResultItem.fileType==1">
-                  <i class="fa fa-file"></i>  <span>{{ fileListResultItem.fileName }}</span></td>
+                  <i class="fa fa-file"></i> &nbsp; <span>{{ fileListResultItem.fileName }}</span></td>
+
                 <td>{{fileListResultItem.createTime}}</td>
                 <td>{{fileListResultItem.modifyTime}}</td>
                 <td>{{fileListResultItem.ownerId}}</td>
                 <td>{{fileListResultItem.teamId}}</td>
-                <td>{{fileListResultItem.tagList}}</td>
+                <td style="width: 5%;">{{fileListResultItem.tagList}}</td>
 
                 <td v-if="fileListResultItem.fileType==1">
                   <button type="button" class="btn btn-primary btn-xs btn-github"
@@ -127,11 +138,11 @@
               <li>共有 {{totalFileItem}}  个文件，共{{totalFilePageNum}}页</li>
             </ul>
             <ul class="pagination pagination-sm no-margin pull-right">
-              <li><a href="#" @click='callTeamList(1)'>«</a></li>
-              <li><a href="#" @click='callTeamList(fileCurrentPageNum-1)'><</a></li>
-              <li><a href="#" @click='callTeamList(fileCurrentPageNum)'>{{fileCurrentPageNum}}</a></li>
-              <li><a href="#" @click='callTeamList(fileCurrentPageNum+1)'>></a></li>
-              <li><a href="#" @click='callTeamList(totalFilePageNum)'>»</a></li>
+              <li><a href="#" @click='callFileListByUser(1)'>«</a></li>
+              <li><a href="#" @click='callFileListByUser(fileCurrentPageNum-1)'><</a></li>
+              <li><a href="#" @click='callFileListByUser(fileCurrentPageNum)'>{{fileCurrentPageNum}}</a></li>
+              <li><a href="#" @click='callFileListByUser(fileCurrentPageNum+1)'>></a></li>
+              <li><a href="#" @click='callFileListByUser(totalFilePageNum)'>»</a></li>
             </ul>
           </div>
         </div>
@@ -160,7 +171,8 @@
         totalFileItem: 0,
         totalFilePageNum: 1,
         tagListSelect: '',
-        teamIdSelect: 0
+        teamIdSelect: 0,
+        isUploading: false
       }
     },
     methods: {
@@ -168,6 +180,11 @@
         this.inputFile = e.target.files[0]
       },
       uploadFile: async function () {
+        if (this.isUploading) {
+          console.log('uploading')
+          return
+        }
+        this.isUploading = true
         let param = new FormData()
         if (!this.inputFile || !this.tagListSelect || !this.teamIdSelect) {
           this.saveFileMsg = '请选择文件属性.'
@@ -184,6 +201,7 @@
           this.saveFileMsg = '上传成功'
           this.closeAddFileModal()
           this.callFileListByUser(1)
+          this.isUploading = false
         } else {
           this.saveFileMsg = res.msg
         }
@@ -200,6 +218,9 @@
       },
       addNewFileModal: function () {
         this.isAddFileShow = true
+        this.tagListSelect = ''
+        this.teamIdSelect = ''
+        this.saveFileMsg = ''
         this.callTagListAndShow()
       },
       closeAddFileModal: function () {

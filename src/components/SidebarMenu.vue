@@ -33,13 +33,13 @@
         <span class="page">文件搜索</span>
       </a>
     </router-link>
-    <router-link tag="li" class="pageLink" to="/access">
+    <router-link tag="li" class="pageLink" to="/">
       <a>
         <i class="fa fa-calendar-o"></i>
         <span class="page">任务进度</span>
       </a>
     </router-link>
-    <router-link tag="li" class="pageLink" to="/repos">
+    <router-link tag="li" class="pageLink" to="/">
       <a>
         <i class="fa fa-list-ul"></i>
         <span class="page">待办事件</span>
